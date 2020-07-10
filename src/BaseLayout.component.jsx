@@ -1,21 +1,19 @@
 import React from "react";
 import "./BaseLayout.styles.css";
-import { Layout, Breadcrumb } from "antd";
-const { Header, Content, Footer } = Layout;
+import { Layout } from "antd";
+const { Header } = Layout;
 
 const BaseLayout = ({ children }) => {
   return (
-    <Layout className="base-layout">
-      <Header>
+    <Layout style={{ minHeight: "100%" }}>
+      <Header style={{ position: "fixed", zIndex: 1, width: "100%" }}>
         <div className="logo" />
       </Header>
-      <Content style={{ padding: "0 50px" }}>
-        <Breadcrumb style={{ margin: "16px 0" }}>
-          <Breadcrumb.Item>Pacientes</Breadcrumb.Item>
-        </Breadcrumb>
-        <div className="site-layout-content">{children}</div>
-      </Content>
-      <Footer style={{ textAlign: "center" }}>iClinic ©2020</Footer>
+      <div
+        style={{ backgroundColor: "#f3f3f3", padding: "24px", height: "100%" }}
+      >
+        {children}
+      </div>
     </Layout>
   );
 };

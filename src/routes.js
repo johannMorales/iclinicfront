@@ -1,7 +1,13 @@
 import ViewPatients from "./views/patients/ViewsPatients";
 import ViewPacientesDetalle from "./views/pacientes-detalle/ViewPacientesDetalle";
+import Login from './views/login';
 
 const routes = [
+  {
+    key: "login",
+    path: "/login",
+    component: Login,
+  },
   {
     key: "patients",
     path: "/",

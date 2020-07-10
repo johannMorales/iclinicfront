@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import API from "../../service/_api";
 import { useHistory } from "react-router-dom";
-
+import Container from "../../components/Container";
+import { TabDatos } from "./components";
 import {
   Tabs,
   Row,
@@ -27,16 +28,15 @@ const ViewPacientesDetalle = () => {
   }
 
   const layout = {
-    labelCol: { span: 6 },
-    wrapperCol: { span: 18 },
+    labelCol: { span: 4 },
+    wrapperCol: { span: 20 },
   };
   const tailLayout = {
     wrapperCol: { offset: 8, span: 16 },
   };
 
   const onFinish = (values) => {
-    API.post("pacientes", values)
-    .then(response => {
+    API.post("pacientes", values).then((response) => {
       history.push("/");
     });
   };
@@ -77,16 +77,20 @@ const ViewPacientesDetalle = () => {
     return null;
   } else
     return (
-      <React.Fragment>
+      <Container>
+        <TabDatos/>
         <Tabs defaultActiveKey="1" onChange={callback}>
           <TabPane tab="Datos" key="1">
             <Row>
               <Col span="24">
-            <h3>Datos Generales</h3>
-            <hr
-              style={{ border: "0.1px solid #D3D3D3", marginBottom: "24px" }}
-            />
-            </Col>
+                <h3>Datos Generales</h3>
+                <hr
+                  style={{
+                    border: "0.1px solid #D3D3D3",
+                    marginBottom: "24px",
+                  }}
+                />
+              </Col>
             </Row>
             <Form
               {...layout}
@@ -98,102 +102,16 @@ const ViewPacientesDetalle = () => {
             >
               <Row>
                 <Col span={12}>
-                  <Form.Item
-                    label="Tipo documento"
-                    name="tipoDocumento"
-                    rules={[
-                      {
-                        required: true,
-                      },
-                    ]}
-                  >
-                    <Select placeholder="Seleccione tipo de documento">
-                      <Option value="D">DNI</Option>
-                      <Option value="E">Carne de extranjeria</Option>
-                      <Option value="C">Cedula de identidad</Option>
-                      <Option value="P">Pasaporte</Option>
-                    </Select>
-                  </Form.Item>
+                 
 
-                  <Form.Item
-                    label="Numero documento"
-                    name="numeroDocumento"
-                    rules={[
-                      {
-                        required: true,
-                      },
-                    ]}
-                  >
-                    <Input />
-                  </Form.Item>
+                 
+                 
 
-                  <Form.Item
-                    label="Apellidos"
-                    style={{ marginBottom: 0, width: "100%" }}
-                  >
-                    <Form.Item
-                      name="apellidoPaterno"
-                      rules={[{ required: true }]}
-                      style={{
-                        display: "inline-block",
-                        width: "calc(50% - 8px)",
-                        margin: "0 8px 0 0",
-                      }}
-                    >
-                      <Input placeholder="Paterno" />
-                    </Form.Item>
-                    <Form.Item
-                      name="apellidoMaterno"
-                      rules={[{ required: true }]}
-                      style={{
-                        display: "inline-block",
-                        width: "calc(50%)",
-                      }}
-                    >
-                      <Input placeholder="Materno" />
-                    </Form.Item>
-                  </Form.Item>
-                  <Form.Item
-                    label="Nombres"
-                    style={{ marginBottom: 0, width: "100%" }}
-                  >
-                    <Form.Item
-                      name="primerNombre"
-                      rules={[{ required: true }]}
-                      style={{
-                        display: "inline-block",
-                        width: "calc(50% - 8px)",
-                        margin: "0 8px 0 0",
-                      }}
-                    >
-                      <Input placeholder="Primer nombre" />
-                    </Form.Item>
-                    <Form.Item
-                      name="segundoNombre"
-                      rules={[{ required: true }]}
-                      style={{
-                        display: "inline-block",
-                        width: "calc(50%)",
-                      }}
-                    >
-                      <Input placeholder="Segundo nombre" />
-                    </Form.Item>
-                  </Form.Item>
+                  
 
-                  <Form.Item name="genero" label="Genero">
-                    <Radio.Group>
-                      <Radio value="M">Masculino</Radio>
-                      <Radio value="F">Femenino</Radio>
-                    </Radio.Group>
-                  </Form.Item>
+                  
 
-                  <Form.Item label="Email" name="email">
-                    <Input placeholder="correo@gmail.com" />
-                  </Form.Item>
-
-                  <Form.Item label="Telefono fijo" name="telefonoFijo">
-                    <Input placeholder="7353234" />
-                  </Form.Item>
+            
                 </Col>
                 <Col span={12}>
                   <Form.Item label="Fecha de nacimiento" name="fechaNacimiento">
@@ -271,13 +189,13 @@ const ViewPacientesDetalle = () => {
               </Row>
               <Row>
                 <Col span="24">
-                <h3>Otros datos</h3>
-                <hr
-                  style={{
-                    border: "0.1px solid #D3D3D3",
-                    marginBottom: "24px",
-                  }}
-                />
+                  <h3>Otros datos</h3>
+                  <hr
+                    style={{
+                      border: "0.1px solid #D3D3D3",
+                      marginBottom: "24px",
+                    }}
+                  />
                 </Col>
               </Row>
               <Row>
@@ -334,7 +252,7 @@ const ViewPacientesDetalle = () => {
             Content of Tab Pane 3
           </TabPane>
         </Tabs>
-      </React.Fragment>
+      </Container>
     );
 };
 
