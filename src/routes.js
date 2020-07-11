@@ -15,7 +15,12 @@ const routes = [
   },
   {
     key: "patients-detalle",
-    path: "/pacientes/:id",
+    path: "/pacientes/nuevo",
+    component: ViewPacientesDetalle,
+  },
+  {
+    key: "patients-detalle",
+    path: "/pacientes/:idPaciente",
     component: ViewPacientesDetalle,
   },
 ];

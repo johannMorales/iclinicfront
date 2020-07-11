@@ -1,3 +1,4 @@
 import TabDatos from "./TabDatos";
+import TabAntecedentes from './TabAntecedentes';
 
-export { TabDatos };
+export { TabDatos, TabAntecedentes };
