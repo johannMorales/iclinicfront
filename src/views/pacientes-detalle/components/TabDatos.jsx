@@ -9,12 +9,19 @@ import {
   Input,
   Radio,
   Button,
+  Popconfirm,
+  notification,
 } from "antd";
 import API from "../../../service/_api";
-import moment from "moment";
 import { busqueda as busquedaProfesiones } from "../../../service/profesiones";
 import { busqueda as busquedaReligiones } from "../../../service/religiones";
-import { detalle as detallePaciente } from "../../../service/pacientes";
+import {
+  detalle as detallePaciente,
+  crear as crearPaciente,
+  actualizar as actualizarPaciente,
+} from "../../../service/pacientes";
+import moment from "moment";
+import { useHistory } from "react-router-dom";
 
 const { Option } = Select;
 
@@ -33,44 +40,57 @@ const formItemLayout = {
   span: 24,
 };
 
-const TabDatos = ({ history, idPaciente }) => {
-  const formRef = React.createRef();
+const TabDatos = ({ idPaciente }) => {
+  const history = useHistory();
 
   const [departamentos, setDepartamentos] = useState(null);
   const [profesiones, setProfesiones] = useState(null);
   const [religiones, setRelgiones] = useState(null);
   const [provincias, setProvincias] = useState(null);
   const [distritos, setDistritos] = useState(null);
-  const [pacienteLoaded, setPacienteLoaded] = useState(false);
+  const [paciente, setPaciente] = useState(null);
 
   const onFinish = (values) => {
-    API.post("pacientes", values).then((response) => {
-      history.push("/");
-    });
+    if (idPaciente) {
+      actualizarPaciente(idPaciente, values).then(({ data }) => {
+        notification.success({ message: "Paciente actualizado" });
+      });
+    } else {
+      crearPaciente(values).then(({ data }) => {
+        notification.success({ message: "Paciente creado" });
+        history.push(`/pacientes/${data.id}`);
+      });
+    }
   };
 
   React.useEffect(() => {
-    API.get("/departamentos/busqueda", { params: { query: "" } }).then(
-      (res) => {
-        setDepartamentos(res.data);
-      }
-    );
-
-    console.log(formRef)
-
     Promise.all([
+      API.get("/departamentos/busqueda", { params: { query: "" } }).then(
+        (res) => {
+          setDepartamentos(res.data);
+        }
+      ),
+      API.get("/provincias/busqueda", {
+        params: { query: "", idDepartamento: 1 },
+      }).then((res) => {
+        setProvincias(res.data);
+      }),
+      API.get("/distritos/busqueda", {
+        params: { query: "", idProvincia: 1 },
+      }).then((res) => {
+        setDistritos(res.data);
+      }),
       busquedaProfesiones("").then((response) => {
         setProfesiones(response.data);
       }),
       busquedaReligiones("").then((response) => {
         setRelgiones(response.data);
-      })
+      }),
     ]).then(() => {
       if (idPaciente) {
         detallePaciente(idPaciente).then((res) => {
-          if(formRef.current)
-         formRef.current.setFieldsValue(res.data);
-         setPacienteLoaded(true);
+          res.data.fechaNacimiento = moment(res.data.fechaNacimiento);
+          setPaciente(res.data);
         });
       }
     });
@@ -92,10 +112,14 @@ const TabDatos = ({ history, idPaciente }) => {
     });
   };
 
-  const formReady = !idPaciente || (idPaciente && pacienteLoaded);
+  const formReady =
+    (!idPaciente || (idPaciente && paciente)) &&
+    departamentos &&
+    provincias &&
+    distritos;
 
   return formReady ? (
-    <Form onFinish={onFinish} ref={formRef}>
+    <Form onFinish={onFinish} initialValues={paciente}>
       <Row>
         <Col span={24}>
           <Card
@@ -220,12 +244,12 @@ const TabDatos = ({ history, idPaciente }) => {
               <Col {...formItemColLayout}>
                 <Row>
                   <Col {...formItemLayout}>
-                    {/* <Form.Item
+                    <Form.Item
                       label="Fecha de nacimiento"
                       name="fechaNacimiento"
                     >
-                      <DatePicker  style={{ width: "100%" }} />
-                    </Form.Item> */}
+                      <DatePicker style={{ width: "100%" }} />
+                    </Form.Item>
                   </Col>
                 </Row>
                 <Row>
@@ -338,7 +362,7 @@ const TabDatos = ({ history, idPaciente }) => {
               <Col {...formItemColLayout}>
                 <Row>
                   <Col {...formItemLayout}>
-                    <Form.Item label="Ocupación" name="idOcupacion">
+                    <Form.Item label="Ocupación" name="idProfesion">
                       <Select placeholder="Seleccione ocupación" allowClear>
                         {profesiones
                           ? profesiones.map((item) => (
@@ -394,17 +418,37 @@ const TabDatos = ({ history, idPaciente }) => {
       </Row>
       <Row justify="end" gutter={12}>
         <Col>
-          <Button type="link"> Cancelar</Button>
+          {!idPaciente ? <Popconfirm
+            placement="topLeft"
+            title="Seguro que desea cancelar el registro?"
+            onConfirm={() => history.push("/pacientes")}
+            okText="Sí, seguro"
+            cancelText="No"
+          >
+            <Button type="link"> Cancelar</Button>
+          </Popconfirm> : null}
         </Col>
         <Col>
           <Button type="primary" htmlType="submit">
-            {" "}
-            Guardar
+            {idPaciente ? "Actualizar" : "Guardar"}
           </Button>
         </Col>
       </Row>
     </Form>
-  ) : null;
+  ) : (
+    <React.Fragment>
+      <Row>
+        <Col span={24}>
+          <Card loading bordered={false} title="Datos generalees"></Card>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={24}>
+          <Card loading bordered={false} title="Otros datos"></Card>
+        </Col>
+      </Row>
+    </React.Fragment>
+  );
 };
 
 export default TabDatos;

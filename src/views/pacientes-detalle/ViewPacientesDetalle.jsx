@@ -5,37 +5,20 @@ import Container from "../../components/Container";
 import { TabDatos, TabAntecedentes } from "./components";
 import {
   Tabs,
-  Row,
-  Col,
-  Form,
-  Input,
-  Button,
-  Checkbox,
-  Select,
-  Radio,
-  DatePicker,
 } from "antd";
 
 const { TabPane } = Tabs;
-const { Option } = Select;
-const childFormItemProps = {};
 
 const ViewPacientesDetalle = ({
   match: {
     params: { idPaciente },
   },
 }) => {
-  let history = useHistory();
   function callback(key) {
     console.log(key);
   }
 
- 
-
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
-
+  
   return (
     <Container 
       breadcrumb={[
@@ -48,10 +31,10 @@ const ViewPacientesDetalle = ({
           <TabDatos idPaciente={idPaciente}/>
         </TabPane>
         <TabPane tab="Antecedentes" key="2"disabled={!idPaciente}>
-          <TabAntecedentes />
+          <TabAntecedentes idPaciente={idPaciente}/>
         </TabPane>
         <TabPane tab="Historia clínica" key="3" disabled={!idPaciente}>
-          Content of Tab Pane 3
+          
         </TabPane>
       </Tabs>
     </Container>

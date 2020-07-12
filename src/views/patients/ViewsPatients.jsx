@@ -1,7 +1,8 @@
 import React from "react";
 import API from "../../service/_api";
 import {Link} from "react-router-dom";
-
+import Container from '../../components/Container';
+import { RightOutlined, PlusOutlined } from '@ant-design/icons';
 import { Table, Form, Row, Col, Input, Button } from "antd";
 
 const columns = [
@@ -30,6 +31,15 @@ const columns = [
     dataIndex: "fechaRegistro",
     key: "fechaRegistro",
   },
+  {
+    title: '',
+    dataIndex: 'id',
+    width: 50,
+    fixed: 'left',
+    render: id => (
+      <Link to={`/pacientes/${id}`}><RightOutlined /></Link>
+    )
+  }
 ];
 
 const ViewPatients = () => {
@@ -51,7 +61,7 @@ const ViewPatients = () => {
     return null;
   } else
   return (
-    <React.Fragment>
+    <Container>
       <div>
         <Form
           labelCol={{ span: 8 }}
@@ -125,15 +135,15 @@ const ViewPatients = () => {
       </div>
       <Row justify="end" gutter={[0, 12]}>
         <Col xl={{ span: 4, offset: 20 }}>
-          <Button type="default" htmlType="submit" block>
-            <Link to="/pacientes/nuevo">Agregar</Link>
+          <Button type="primary" htmlType="submit" block>
+            <Link to="/pacientes/nuevo">Agregar  <PlusOutlined /></Link>
           </Button>
         </Col>
         <Col xl={{ span: 24 }}>
           <Table columns={columns} dataSource={data} />
         </Col>
       </Row>
-    </React.Fragment>
+    </Container>
   );
 };
 

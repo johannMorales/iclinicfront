@@ -10,7 +10,7 @@ const routes = [
   },
   {
     key: "patients",
-    path: "/",
+    path: "/pacientes",
     component: ViewPatients,
   },
   {
