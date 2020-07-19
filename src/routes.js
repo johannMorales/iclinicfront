@@ -1,6 +1,7 @@
 import ViewPatients from "./views/patients/ViewsPatients";
 import ViewPacientesDetalle from "./views/pacientes-detalle/ViewPacientesDetalle";
 import Login from './views/login';
+import { AtencionesDetalle } from './views/atenciones-detalle';
 
 const routes = [
   {
@@ -22,6 +23,16 @@ const routes = [
     key: "patients-detalle",
     path: "/pacientes/:idPaciente",
     component: ViewPacientesDetalle,
+  },
+  {
+    key: "atenciones-nuevo",
+    path: "/pacientes/:idPaciente/atenciones/nuevo",
+    component: AtencionesDetalle,
+  },
+  {
+    key: "atenciones-nuevo",
+    path: "/pacientes/:idPaciente/atenciones/:idAtencion",
+    component: AtencionesDetalle,
   },
 ];
 

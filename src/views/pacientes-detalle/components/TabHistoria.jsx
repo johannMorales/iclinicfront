@@ -17,6 +17,7 @@ import {
   crear,
 } from "../../../service/pacienteantecedentes";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { useHistory } from "react-router-dom";
 
 const { Text } = Typography;
 
@@ -30,6 +31,7 @@ const TabAntecedentes = ({ idPaciente }) => {
   const [tableLoading, setTableLoading] = React.useState(true);
   const [list, setList] = React.useState([]);
   const [form] = Form.useForm();
+    const history = useHistory();
 
   const openDetail = (id) => {
     form.resetFields();
@@ -77,7 +79,6 @@ const TabAntecedentes = ({ idPaciente }) => {
     setTableLoading(true);
     if (idPaciente) {
       getAllByIdPaciente(idPaciente).then(({ data }) => {
-        console.log(data);
         setList(data);
         setTableLoading(false);
       });
@@ -132,10 +133,10 @@ const TabAntecedentes = ({ idPaciente }) => {
       </Modal>
       <Row>
         <Col span={24}>
-          <Card bordered={false} title="Enfermedades pre-existentes">
+          <Card bordered={false} title="Lista de atenciones">
             <Row justify="end">
               <Col>
-                <Button type="primary" onClick={onClickCreate}>
+                <Button type="primary" onClick={() => history.push(`/pacientes/${idPaciente}/atenciones/nuevo`)}>
                   Agregar
                 </Button>
               </Col>

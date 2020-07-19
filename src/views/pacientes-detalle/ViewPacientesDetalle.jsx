@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import API from "../../service/_api";
 import { useHistory } from "react-router-dom";
 import Container from "../../components/Container";
-import { TabDatos, TabAntecedentes } from "./components";
+import { TabDatos, TabAntecedentes, TabHistoria } from "./components";
 import {
   Tabs,
 } from "antd";
@@ -23,7 +23,7 @@ const ViewPacientesDetalle = ({
     <Container 
       breadcrumb={[
         { label: "Pacientes", to: "/pacientes" },
-        { label: idPaciente ? `#${idPaciente}` : 'Nuevo' },
+        { label: idPaciente ? `Paciente #${idPaciente}` : 'Nuevo' },
       ]}
     >
       <Tabs defaultActiveKey="1" onChange={callback}>
@@ -34,7 +34,7 @@ const ViewPacientesDetalle = ({
           <TabAntecedentes idPaciente={idPaciente}/>
         </TabPane>
         <TabPane tab="Historia clínica" key="3" disabled={!idPaciente}>
-          
+          <TabHistoria idPaciente={idPaciente}/>
         </TabPane>
       </Tabs>
     </Container>
